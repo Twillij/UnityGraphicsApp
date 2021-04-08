@@ -19,9 +19,17 @@ public class PlayerController : MonoBehaviour
     {
         float currentMaxVelocity = isRunning ? maximumRunVelocity : maximumWalkVelocity;
 
-        if (isMovingForward && velocityZ < currentMaxVelocity)
+        if (isMovingForward)
         {
-            velocityZ += acceleration * Time.deltaTime;
+            if (velocityZ > currentMaxVelocity)
+            {
+                velocityZ -= deceleration * Time.deltaTime;
+            }
+            else
+            {
+                velocityZ += acceleration * Time.deltaTime;
+                velocityZ = Mathf.Min(velocityZ, currentMaxVelocity);
+            }
         }
 
         if (isMovingBackward && velocityZ > -currentMaxVelocity)
