@@ -1263,7 +1263,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Press WASD to move
 
-    Hold Shift to run'
+    Hold Shift + W to run'
 --- !u!222 &1438686939
 CanvasRenderer:
   m_ObjectHideFlags: 0
