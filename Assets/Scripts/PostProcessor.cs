@@ -1,13 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PostProcessor : MonoBehaviour
 {
-    public Material mat;
+    public Material postMat;
+    public bool active = false;
+
+    public void ToggleActive()
+    {
+        active = !active;
+    }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        Graphics.Blit(source, destination, mat);
+        // if active, then render the image using the post processing material
+        if (active)
+        {
+            Graphics.Blit(source, destination, postMat);
+        }
+        // otherwise render the image as normal
+        else
+        {
+            Graphics.Blit(source, destination);
+        }
     }
 }

@@ -18,14 +18,17 @@ public class PlayerController : MonoBehaviour
 
     void ProcessMovementInputs(bool isMovingForward, bool isMovingBackward, bool isMovingLeft, bool isMovingRight, bool isRunning)
     {
+        // set the max velocity depending on whether the character is running or walking
         float currentMaxVelocity = isRunning ? maximumRunVelocity : maximumWalkVelocity;
 
         if (isMovingForward)
         {
+            // if the forward velocity is above max, then decelerate
             if (velocityZ > currentMaxVelocity)
             {
                 velocityZ -= deceleration * Time.deltaTime;
             }
+            // otherwise accelerate until velocity reaches max
             else
             {
                 velocityZ += acceleration * Time.deltaTime;
@@ -48,24 +51,28 @@ public class PlayerController : MonoBehaviour
             velocityX += acceleration * Time.deltaTime;
         }
 
+        // if the character is not moving forward, but forward velocity is above 0, then decelerate
         if (!isMovingForward && velocityZ > 0)
         {
             velocityZ -= deceleration * Time.deltaTime;
             velocityZ = Mathf.Max(0, velocityZ);
         }
 
+        // if the character is not moving backward, but forward velocity is below 0, then decelerate
         if (!isMovingBackward && velocityZ < 0)
         {
             velocityZ += deceleration * Time.deltaTime;
             velocityZ = Mathf.Min(velocityZ, 0);
         }
 
+        // if the character is not moving left, but horizontal velocity is below 0, then decelerate
         if (!isMovingLeft && velocityX < 0)
         {
             velocityX += deceleration * Time.deltaTime;
             velocityX = Mathf.Min(velocityX, 0);
         }
 
+        // if the character is not moving right, but horizontal velocity is above 0, then decelerate
         if (!isMovingRight && velocityX > 0)
         {
             velocityX -= deceleration * Time.deltaTime;
@@ -94,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
         ProcessMovementInputs(isMovingForward, isMovingBackward, isMovingLeft, isMovingRight, isRunning);
 
+        // set the animation blend parameters
         animator.SetFloat(velocityXHash, velocityX);
         animator.SetFloat(velocityZHash, velocityZ);
     }

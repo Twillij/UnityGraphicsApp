@@ -11,8 +11,10 @@ public class MaterialChanger : MonoBehaviour
 
     public void SwitchMaterial()
     {
+        // cycle through the material list
         matIndex = (matIndex + 1 < materials.Count) ? matIndex + 1 : 0;
 
+        // set the target's material
         target.GetComponent<Renderer>().material = materials[matIndex];
     }
 
