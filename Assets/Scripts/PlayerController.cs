@@ -15,9 +15,53 @@ public class PlayerController : MonoBehaviour
     int velocityXHash;
     int velocityZHash;
 
-    void Decelerate()
+    void ProcessMovementInputs(bool isMovingForward, bool isMovingBackward, bool isMovingLeft, bool isMovingRight, bool isRunning)
     {
+        float currentMaxVelocity = isRunning ? maximumRunVelocity : maximumWalkVelocity;
 
+        if (isMovingForward && velocityZ < currentMaxVelocity)
+        {
+            velocityZ += acceleration * Time.deltaTime;
+        }
+
+        if (isMovingBackward && velocityZ > -currentMaxVelocity)
+        {
+            velocityZ -= acceleration * Time.deltaTime;
+        }
+
+        if (isMovingLeft && velocityX > -currentMaxVelocity)
+        {
+            velocityX -= acceleration * Time.deltaTime;
+        }
+
+        if (isMovingRight && velocityX < currentMaxVelocity)
+        {
+            velocityX += acceleration * Time.deltaTime;
+        }
+
+        if (!isMovingForward && velocityZ > 0)
+        {
+            velocityZ -= deceleration * Time.deltaTime;
+            velocityZ = Mathf.Max(0, velocityZ);
+        }
+
+        if (!isMovingBackward && velocityZ < 0)
+        {
+            velocityZ += deceleration * Time.deltaTime;
+            velocityZ = Mathf.Min(velocityZ, 0);
+        }
+
+        if (!isMovingLeft && velocityX < 0)
+        {
+            velocityX += deceleration * Time.deltaTime;
+            velocityX = Mathf.Min(velocityX, 0);
+        }
+
+        if (!isMovingRight && velocityX > 0)
+        {
+            velocityX -= deceleration * Time.deltaTime;
+            velocityX = Mathf.Max(0, velocityX);
+        }
     }
 
     // Start is called before the first frame update
@@ -33,27 +77,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         bool isMovingForward = Input.GetKey(KeyCode.W);
-        bool isMovinBackward = Input.GetKey(KeyCode.S);
+        bool isMovingBackward = Input.GetKey(KeyCode.S);
         bool isMovingLeft = Input.GetKey(KeyCode.A);
         bool isMovingRight = Input.GetKey(KeyCode.D);
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        float currentMaxVelocity = isRunning ? maximumRunVelocity : maximumWalkVelocity;
-
-        if (isMovingForward && velocityZ < currentMaxVelocity)
-        {
-            velocityZ += acceleration * Time.deltaTime;
-        }
-
-        if (isMovingLeft && velocityX > -currentMaxVelocity)
-        {
-            velocityX -= acceleration * Time.deltaTime;
-        }
-
-        if (isMovingRight && velocityX < currentMaxVelocity)
-        {
-            velocityX += acceleration * Time.deltaTime;
-        }
+        ProcessMovementInputs(isMovingForward, isMovingBackward, isMovingLeft, isMovingRight, isRunning);
 
         animator.SetFloat(velocityXHash, velocityX);
         animator.SetFloat(velocityZHash, velocityZ);
