@@ -9,7 +9,7 @@ public class MaterialChanger : MonoBehaviour
 
     private int matIndex = 0;
 
-    private void SwitchMaterial()
+    public void SwitchMaterial()
     {
         matIndex = (matIndex + 1 < materials.Count) ? matIndex + 1 : 0;
 

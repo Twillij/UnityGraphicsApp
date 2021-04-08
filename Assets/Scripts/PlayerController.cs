@@ -9,11 +9,12 @@ public class PlayerController : MonoBehaviour
     public float maximumWalkVelocity = 0.5f;
     public float maximumRunVelocity = 2.0f;
 
-    Animator animator;
     float velocityX = 0;
     float velocityZ = 0;
     int velocityXHash;
     int velocityZHash;
+    Animator animator;
+    CharacterController controller;
 
     void ProcessMovementInputs(bool isMovingForward, bool isMovingBackward, bool isMovingLeft, bool isMovingRight, bool isRunning)
     {
@@ -76,6 +77,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
 
         velocityXHash = Animator.StringToHash("VelocityX");
         velocityZHash = Animator.StringToHash("VelocityZ");
